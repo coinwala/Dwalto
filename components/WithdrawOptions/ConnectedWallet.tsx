@@ -114,16 +114,12 @@ export default function ConnectedWallet({
 
     if (displayExternalWallet === "Coinwala") {
       try {
-        // Create a new CoinWala
         const newCoinWala = await CoinWala.create();
         setGeneratedCoinWala(newCoinWala);
         destinationAddress = newCoinWala.keypair.publicKey.toString();
         isCoinWala = true;
 
-        // Safely construct the URL
         try {
-          // Assuming the CoinWala URL is a valid URL string
-          // Add a base URL if the CoinWala.url doesn't include one
           const urlString = newCoinWala.url.toString();
           if (!urlString.startsWith("http")) {
             hyperLinkUrl = new URL(`https://${urlString}`);
@@ -132,7 +128,6 @@ export default function ConnectedWallet({
           }
         } catch (urlError) {
           console.error("Error creating URL:", urlError);
-          // Continue with the transaction but log the URL error
         }
 
         console.log(
@@ -182,8 +177,6 @@ export default function ConnectedWallet({
         destinationAddress,
         amtInLamports
       );
-
-      // Only open the coinwala if it was successfully created
       if (hyperLinkUrl) {
         window.open(hyperLinkUrl.toString(), "_blank", "noopener,noreferrer");
       }
