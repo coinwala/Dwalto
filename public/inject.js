@@ -12,20 +12,20 @@
     /** @type {(details: PaymentDetails) => void} */
     function showPaymentModal(details) {
       const modal = document.createElement('div');
-      modal.className = 'hyperlink-modal';
+      modal.className = 'coinwala-modal';
       modal.innerHTML = `
-        <div class="hyperlink-modal-content">
+        <div class="coinwala-modal-content">
           <h3>Send Payment</h3>
           <p>Amount: ${details.amount}</p>
           <p>To: ${details.recipient}</p>
-          <button class="hyperlink-pay-button">Confirm Payment</button>
+          <button class="coinwala-pay-button">Confirm Payment</button>
         </div>
       `;
   
       document.body.appendChild(modal);
   
       // Handle payment confirmation
-      modal.querySelector('.hyperlink-pay-button').addEventListener('click', () => {
+      modal.querySelector('.coinwala-pay-button').addEventListener('click', () => {
         // Implement payment logic
         modal.remove();
       });
@@ -33,7 +33,7 @@
   
     function enhancePaymentLinks() {
       // Find payment links
-      const links = document.querySelectorAll('a[href*="hyperlink.cash/pay"]');
+      const links = document.querySelectorAll('a[href*="coinwala.cash/pay"]');
       
       links.forEach(link => {
         // Skip if already enhanced
@@ -42,8 +42,8 @@
   
         // Create payment button
         const button = document.createElement('button');
-        button.className = 'hyperlink-pay-button';
-        button.textContent = 'Pay with Hyperlink';
+        button.className = 'coinwala-pay-button';
+        button.textContent = 'Pay with Coinwala';
         
         button.addEventListener('click', (e) => {
           e.preventDefault();
@@ -77,7 +77,7 @@
     // Add styles
     const styles = document.createElement('style');
     styles.textContent = `
-      .hyperlink-pay-button {
+      .coinwala-pay-button {
         background: #0066ff;
         color: white;
         border: none;
@@ -88,7 +88,7 @@
         font-size: 14px;
       }
   
-      .hyperlink-modal {
+      .coinwala-modal {
         position: fixed;
         top: 0;
         left: 0;
@@ -101,7 +101,7 @@
         z-index: 999999;
       }
   
-      .hyperlink-modal-content {
+      .coinwala-modal-content {
         background: white;
         padding: 20px;
         border-radius: 8px;

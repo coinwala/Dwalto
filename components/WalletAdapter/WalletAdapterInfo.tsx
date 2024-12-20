@@ -37,7 +37,7 @@ export default function WalletAdapterInfo() {
           <div className="flex items-end">
             {/* <img
               draggable="false"
-              alt="HyperLink Adapter Auth Graphic"
+              alt="CoinWala Adapter Auth Graphic"
               loading="lazy"
               width={1080}
               height={800}

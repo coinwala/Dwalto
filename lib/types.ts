@@ -22,10 +22,7 @@ export interface TokenWithBalance extends TokenDetails {
 export type AllowedOrigin =
   | "http://localhost:3000"
   | "http://localhost:3001"
-  | "https://staging.tiplink.io"
-  | "https://dev.tiplink.io"
-  | "https://adapter.tiplink.io"
-  | "https://tiplink.io";
+  | "https://wallet.coinwala.io";
 
 /**
  * Base transaction details interface
@@ -130,4 +127,51 @@ export interface NFTMetadata {
     verified?: boolean;
     share?: number;
   }>;
+}
+
+export interface Token {
+  address: string;
+  created_at: string;
+  daily_volume: number;
+  decimals: number;
+  extensions: {
+    coingeckoId?: string;
+  };
+  freeze_authority: null;
+  logoURI: string;
+  mint_authority: null;
+  minted_at: null;
+  name: string;
+  permanent_delegate: null;
+  symbol: string;
+  tags: string[];
+}
+export interface SwapRouteResponse {
+  inputMint: string;
+  inAmount: string;
+  outputMint: string;
+  outAmount: string;
+  otherAmountThreshold: string;
+  swapMode: "ExactIn" | "ExactOut";
+  slippageBps: number;
+  platformFee: null | number;
+  priceImpactPct: string;
+  routePlan: RoutePlanItem[];
+  scoreReport: null | any;
+  contextSlot: number;
+  timeTaken: number;
+}
+
+export interface RoutePlanItem {
+  swapInfo: {
+    ammKey: string;
+    label: string;
+    inputMint: string;
+    outputMint: string;
+    inAmount: string;
+    outAmount: string;
+    feeAmount: string;
+    feeMint: string;
+  };
+  percent: number;
 }

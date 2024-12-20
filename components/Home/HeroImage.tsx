@@ -1,18 +1,7 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { FcGoogle } from "react-icons/fc";
-import { AnimatedBeam } from "../ui/AnimatedBeam";
-import { AnimatedBeam2 } from "../ui/AnimatedBeam2";
-import {
-  ArrowRightLeft,
-  icons,
-  Link,
-  PlugZap,
-  ShoppingBasket,
-  Wallet,
-} from "lucide-react";
-import Image from "next/image";
+import { ArrowRightLeft, Link } from "lucide-react";
 import { World } from "../ui/globe";
 import { globeConfig, sampleArcs } from "@/lib/GlobeConstant";
 import { CardDemo } from "../AnimatedCard";

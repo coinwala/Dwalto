@@ -35,7 +35,7 @@ const UserWalletDashboard: React.FC<UserWalletDashboardProps> = ({
         return;
       }
 
-      loadingToast = toast.loading("Preparing your HyperLink account", {
+      loadingToast = toast.loading("Preparing your CoinWala account", {
         position: "top-center",
       });
 

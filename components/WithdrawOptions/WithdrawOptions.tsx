@@ -5,11 +5,11 @@ import GroupButton from "../GroupButton";
 import { Wallet } from "lucide-react";
 
 interface WithdrawOptionsProps {
-  HyperLinkPublicKey: string | null;
+  CoinWalaPublicKey: string | null;
 }
 
 export default function WithdrawOptions({
-  HyperLinkPublicKey,
+  CoinWalaPublicKey,
 }: WithdrawOptionsProps) {
   const { wallet } = useWallet();
   const [displayExternalWallet, setDisplayExternalWallet] =
@@ -18,11 +18,11 @@ export default function WithdrawOptions({
   if (
     displayExternalWallet === "connectedWallet" ||
     displayExternalWallet === "externalWallet" ||
-    displayExternalWallet === "Hyperlink"
+    displayExternalWallet === "Coinwala"
   ) {
     return (
       <ConnectedWallet
-        HyperLinkPublicKey={HyperLinkPublicKey}
+        CoinWalaPublicKey={CoinWalaPublicKey}
         setDisplayExternalWallet={setDisplayExternalWallet}
         displayExternalWallet={displayExternalWallet}
       />
@@ -79,9 +79,9 @@ export default function WithdrawOptions({
                 </svg>
               </div>
             }
-            title="Send Via Hyperlink"
-            description="Create new Hyperlink using assetsfrom this wallet."
-            onClick={() => setDisplayExternalWallet("Hyperlink")}
+            title="Send Via CoinWala link"
+            description="Create new CoinWala link using assets from this wallet."
+            onClick={() => setDisplayExternalWallet("Coinwala")}
           />
           <GroupButton
             icon={

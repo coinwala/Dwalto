@@ -5,17 +5,25 @@ import {
   FaGithub,
   FaXTwitter,
 } from "react-icons/fa6";
-import Logo from "../icons/Logo";
 import Link from "next/link";
+import CoinwalaLogo from "../CoinWala";
+import Image from "next/image";
 
 export function Footer() {
   return (
-    <footer className="bg-black text-white p-10">
-      <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+    <footer className="bg-black p-5 text-white lg:p-10">
+      <div className="mx-auto w-full max-w-screen-xl lg:p-4  lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-            <div className="bg-black border border-white/25 rounded-md shadow-inner shadow-white/55 h-10 w-10 flex items-center justify-center">
-              <Logo className="h-8 w-8" fill="#ffffff" />
+            <div className="bg-black border p-2 border-white/25 rounded-md shadow-inner shadow-white/55  flex items-center justify-center">
+              <Image
+                className="rounded-lg"
+                src="/assets/images/images/symbolLogo.png"
+                alt="logo"
+                width={40}
+                height={40}
+                priority
+              />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
@@ -24,7 +32,7 @@ export function Footer() {
               <ul className="text-gray-500 text-sm dark:text-gray-400 font-medium">
                 <li className="mb-4">
                   <Link href="#" className="hover:underline">
-                    Create hyperlink
+                    Create CoinWala link
                   </Link>
                 </li>
                 <li className="mb-4">
@@ -75,7 +83,7 @@ export function Footer() {
         </div>
         <div className="sm:flex sm:items-center sm:justify-between mt-20">
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-            © 2024 Hyperlink All Rights Reserved.
+            © 2024 CoinWala All Rights Reserved.
           </span>
           <div className="flex mt-4 sm:justify-center sm:mt-0">
             <Link

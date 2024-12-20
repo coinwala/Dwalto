@@ -30,7 +30,7 @@ export const LoginDialog = ({
 
       <DialogHeader>
         <DialogTitle className="flex justify-center text-center my-3 text-[20px] font-bold leading-none text-gray-800 dark:text-gray-50 mobile:text-[24px]">
-          Login to HyperLink
+          Login to CoinWala
         </DialogTitle>
         <p className="mb-3 text-center text-xs text-gray-600 dark:text-gray-200 mobile:text-base">
           Click below to continue with your Google account.

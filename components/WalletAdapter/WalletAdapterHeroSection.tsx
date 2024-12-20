@@ -50,7 +50,7 @@ const WalletAdapterHeroSection: React.FC<WalletAdapterHeroSectionProps> = ({
         <div className="flex w-fit items-center justify-center gap-1 rounded-lg bg-black/10 px-3 py-1 text-black">
           <PlugZap className="h-4 w-4 flex-shrink-0" />
           <p className="text-sm font-semibold uppercase md:text-base">
-            Hyperlink Wallet Adapter
+            Coinwala Wallet Adapter
           </p>
         </div>
 

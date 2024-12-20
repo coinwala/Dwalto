@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "fast": "next dev --turbo"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.2.0",
@@ -25,7 +26,10 @@
     "@radix-ui/react-popover": "^1.1.2",
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-tabs": "^1.1.0",
+    "@radix-ui/react-toggle": "^1.1.1",
+    "@radix-ui/react-toggle-group": "^1.1.1",
     "@react-three/drei": "^9.117.3",
     "@react-three/fiber": "^8.17.10",
     "@solana/actions": "^1.6.5",
@@ -35,6 +39,7 @@
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/wallet-adapter-wallets": "^0.19.32",
     "@solana/web3.js": "^1.95.3",
+    "@tanstack/react-virtual": "^3.11.1",
     "@types/next-auth": "^3.15.0",
     "@web3auth/base": "^9.0.2",
     "@web3auth/no-modal": "^9.0.2",

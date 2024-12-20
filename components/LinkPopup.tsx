@@ -39,7 +39,7 @@ export default function LinkPopup({
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex justify-center text-2xl">
-              Your Hyperlink
+              Your CoinWala link
             </DialogTitle>
             <DialogDescription className="flex justify-center">
               <div>
@@ -84,7 +84,9 @@ export default function LinkPopup({
                           <span>
                             <ShieldCheck />
                           </span>
-                          <span>All Hyperlinks are non-custodial wallets.</span>
+                          <span>
+                            All CoinWala links are non-custodial wallets.
+                          </span>
                         </p>
                       </div>
                     </span>

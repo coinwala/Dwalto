@@ -7,7 +7,7 @@ type FundingOptionsProps = {
   setTransferAmount: (value: string) => void;
   amount: string;
 };
-export default function SendHyperlink({
+export default function SendCoinwala({
   setStep,
   setTransferAmount,
   amount,

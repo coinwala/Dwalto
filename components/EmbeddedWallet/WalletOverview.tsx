@@ -146,7 +146,7 @@ const WalletOverview = ({
                 />
               </div>
 
-              <span className="mt-2">Your Hyperlink Wallet</span>
+              <span className="mt-2">Your CoinWala Wallet</span>
             </div>
           </SheetTitle>
           <SheetDescription className="flex items-center justify-center">

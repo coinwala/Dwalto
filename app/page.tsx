@@ -6,20 +6,15 @@ import Home from "@/components/Home/Home";
 
 export default async function Page() {
   const session = await auth();
+  if (session) {
+    return <LoginAppbar session={session} />;
+  }
 
   return (
-    <div className="flex flex-col ">
-      {!session?.idToken ? (
-        <>
-          <Appbar />
-          <Home />
-          <Footer />
-        </>
-      ) : (
-        <>
-          <LoginAppbar session={session} />
-        </>
-      )}
+    <div className="flex flex-col">
+      <Appbar />
+      <Home />
+      <Footer />
     </div>
   );
 }

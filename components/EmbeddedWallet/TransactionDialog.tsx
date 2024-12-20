@@ -107,7 +107,7 @@ const TransactionDialog = ({
 
           <div className="bg-slate-800 p-4 rounded-lg flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span>Via HyperLink Wallet:</span>
+              <span>Via CoinWala Wallet:</span>
               <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
                 T
               </div>

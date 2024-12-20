@@ -511,6 +511,13 @@ export default function EmbeddedWallet({ session }: UserInfoProps) {
       type: "hide_wallet",
       windowName: "",
     });
+
+    // Wait for disconnect acknowledgment before final cleanup
+    const cleanup = () => {
+      processedMessages.current.clear();
+    };
+
+    cleanup();
   }, [sendMessageToParent]);
 
   const handleLoginClose = useCallback(() => {

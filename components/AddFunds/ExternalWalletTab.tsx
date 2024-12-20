@@ -11,7 +11,7 @@ import { convertUsdToSol, convertSolToUsd } from "@/lib/KeyStore";
 import { useTransferSOL } from "@/app/hooks/useTransferSOL";
 
 interface FundingOptionsProps {
-  HyperLinkPublicKey: string | null;
+  CoinWalaPublicKey: string | null;
   setShowExternalWallet: React.Dispatch<React.SetStateAction<boolean>>;
 }
 interface Token {
@@ -23,7 +23,7 @@ interface Token {
 }
 
 export default function ExternalWalletTab({
-  HyperLinkPublicKey,
+  CoinWalaPublicKey,
   setShowExternalWallet,
 }: FundingOptionsProps) {
   const [amount, setAmount] = useState("");
@@ -65,8 +65,8 @@ export default function ExternalWalletTab({
   }, [connection, publicKey]);
 
   const handleDeposit = async () => {
-    if (!HyperLinkPublicKey) {
-      console.error("HyperLinkPublicKey is null");
+    if (!CoinWalaPublicKey) {
+      console.error("CoinWalaPublicKey is null");
       return;
     }
 
@@ -83,11 +83,11 @@ export default function ExternalWalletTab({
 
       // Get the initial balance
       const initialBalance = await connection.getBalance(
-        new PublicKey(HyperLinkPublicKey)
+        new PublicKey(CoinWalaPublicKey)
       );
 
       // Perform the transfer
-      await transferSOL(HyperLinkPublicKey, amtInLamports);
+      await transferSOL(CoinWalaPublicKey, amtInLamports);
 
       if (error) {
         console.error("Transfer error:", error);
@@ -95,7 +95,7 @@ export default function ExternalWalletTab({
       } else {
         // Get the final balance after transfer
         const finalBalance = await connection.getBalance(
-          new PublicKey(HyperLinkPublicKey)
+          new PublicKey(CoinWalaPublicKey)
         );
 
         // Calculate the actual transferred amount
@@ -144,7 +144,7 @@ export default function ExternalWalletTab({
         <div className="flex w-full flex-col justify-start space-y-5 xs:space-y-0 xs:flex-row xs:space-x-10">
           <div>
             <Combobox
-              HyperLinkPublicKey={publicKey?.toString() ?? ""}
+              CoinWalaPublicKey={publicKey?.toString() ?? ""}
               onTokenSelect={setSelectedToken}
             />
           </div>

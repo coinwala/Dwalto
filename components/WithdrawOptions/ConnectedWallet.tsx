@@ -17,10 +17,10 @@ import {
   getBalance,
 } from "@/lib/client";
 import { Input } from "../ui/input";
-import { HyperLink } from "@/lib/url";
+import { CoinWala } from "@/lib/url";
 
 interface FundingOptionsProps {
-  HyperLinkPublicKey: string | null;
+  CoinWalaPublicKey: string | null;
   setDisplayExternalWallet: React.Dispatch<React.SetStateAction<string>>;
   displayExternalWallet: string;
 }
@@ -34,7 +34,7 @@ interface Token {
 }
 
 export default function ConnectedWallet({
-  HyperLinkPublicKey,
+  CoinWalaPublicKey,
   setDisplayExternalWallet,
   displayExternalWallet,
 }: FundingOptionsProps) {
@@ -46,8 +46,9 @@ export default function ConnectedWallet({
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
   const [externalWalletAddress, setExternalWalletAddress] = useState("");
   const [isValidExternalAddress, setIsValidExternalAddress] = useState(false);
-  const [generatedHyperLink, setGeneratedHyperLink] =
-    useState<HyperLink | null>(null);
+  const [generatedCoinWala, setGeneratedCoinWala] = useState<CoinWala | null>(
+    null
+  );
 
   useEffect(() => {
     initClients();
@@ -55,8 +56,8 @@ export default function ConnectedWallet({
 
   useEffect(() => {
     const fetchBalance = async () => {
-      if (!HyperLinkPublicKey) {
-        console.error("HyperLink wallet address not set");
+      if (!CoinWalaPublicKey) {
+        console.error("CoinWala wallet address not set");
         return;
       }
       const conn = getConnection();
@@ -66,12 +67,12 @@ export default function ConnectedWallet({
       }
 
       try {
-        const hyperLinkPubKey = new PublicKey(HyperLinkPublicKey);
-        console.log("Attempting to fetch balance for:", HyperLinkPublicKey);
+        const hyperLinkPubKey = new PublicKey(CoinWalaPublicKey);
+        console.log("Attempting to fetch balance for:", CoinWalaPublicKey);
         const balanceStr = await getBalance(hyperLinkPubKey);
         const balanceInSOL = parseFloat(balanceStr);
         setBalance(balanceInSOL);
-        console.log(`HyperLink wallet balance: ${balanceInSOL} SOL`);
+        console.log(`CoinWala wallet balance: ${balanceInSOL} SOL`);
       } catch (error) {
         console.error("Error fetching balance:", error);
         if (error instanceof Error) {
@@ -83,7 +84,7 @@ export default function ConnectedWallet({
     };
 
     fetchBalance();
-  }, [HyperLinkPublicKey]);
+  }, [CoinWalaPublicKey]);
 
   const validateExternalAddress = (address: string) => {
     try {
@@ -108,22 +109,18 @@ export default function ConnectedWallet({
     console.log("Public key:", publicKey?.toString());
 
     let destinationAddress: string;
-    let isHyperLink = false;
+    let isCoinWala = false;
     let hyperLinkUrl: URL | null = null;
 
-    if (displayExternalWallet === "Hyperlink") {
+    if (displayExternalWallet === "Coinwala") {
       try {
-        // Create a new HyperLink
-        const newHyperLink = await HyperLink.create();
-        setGeneratedHyperLink(newHyperLink);
-        destinationAddress = newHyperLink.keypair.publicKey.toString();
-        isHyperLink = true;
+        const newCoinWala = await CoinWala.create();
+        setGeneratedCoinWala(newCoinWala);
+        destinationAddress = newCoinWala.keypair.publicKey.toString();
+        isCoinWala = true;
 
-        // Safely construct the URL
         try {
-          // Assuming the HyperLink URL is a valid URL string
-          // Add a base URL if the HyperLink.url doesn't include one
-          const urlString = newHyperLink.url.toString();
+          const urlString = newCoinWala.url.toString();
           if (!urlString.startsWith("http")) {
             hyperLinkUrl = new URL(`https://${urlString}`);
           } else {
@@ -131,17 +128,16 @@ export default function ConnectedWallet({
           }
         } catch (urlError) {
           console.error("Error creating URL:", urlError);
-          // Continue with the transaction but log the URL error
         }
 
         console.log(
-          "HyperLink created successfully:",
+          "CoinWala created successfully:",
           destinationAddress,
-          newHyperLink
+          newCoinWala
         );
       } catch (error) {
-        console.error("Error creating HyperLink:", error);
-        toast.error("Failed to create HyperLink");
+        console.error("Error creating CoinWala:", error);
+        toast.error("Failed to create CoinWala");
         return;
       }
     } else if (displayExternalWallet === "externalWallet") {
@@ -177,12 +173,10 @@ export default function ConnectedWallet({
       }
 
       const signature = await sendTransaction(
-        new PublicKey(HyperLinkPublicKey ?? ""),
+        new PublicKey(CoinWalaPublicKey ?? ""),
         destinationAddress,
         amtInLamports
       );
-
-      // Only open the hyperlink if it was successfully created
       if (hyperLinkUrl) {
         window.open(hyperLinkUrl.toString(), "_blank", "noopener,noreferrer");
       }
@@ -192,12 +186,12 @@ export default function ConnectedWallet({
         signature
       );
 
-      if (isHyperLink && generatedHyperLink) {
+      if (isCoinWala && generatedCoinWala) {
         const hyperLinkUrlString = hyperLinkUrl
           ? hyperLinkUrl.toString()
           : "URL not available";
-        console.log("Generated HyperLink URL:", hyperLinkUrlString);
-        toast.success(`HyperLink created: ${hyperLinkUrlString}`, {
+        console.log("Generated CoinWala URL:", hyperLinkUrlString);
+        toast.success(`CoinWala created: ${hyperLinkUrlString}`, {
           duration: 10000,
           position: "top-center",
         });
@@ -208,8 +202,8 @@ export default function ConnectedWallet({
         position: "top-center",
       });
 
-      if (HyperLinkPublicKey) {
-        const newBalance = await getBalance(new PublicKey(HyperLinkPublicKey));
+      if (CoinWalaPublicKey) {
+        const newBalance = await getBalance(new PublicKey(CoinWalaPublicKey));
         setBalance(parseFloat(newBalance));
       }
 
@@ -257,7 +251,7 @@ export default function ConnectedWallet({
         <div className="flex w-full flex-col justify-start space-y-5 xs:space-y-0 xs:flex-row xs:space-x-10">
           <div>
             <Combobox
-              HyperLinkPublicKey={HyperLinkPublicKey ?? ""}
+              CoinWalaPublicKey={CoinWalaPublicKey ?? ""}
               onTokenSelect={setSelectedToken}
             />
           </div>
@@ -296,7 +290,7 @@ export default function ConnectedWallet({
                   isTransferring ||
                   (displayExternalWallet === "externalWallet" &&
                     !isValidExternalAddress) ||
-                  (!HyperLinkPublicKey &&
+                  (!CoinWalaPublicKey &&
                     displayExternalWallet !== "externalWallet")
                 }
                 onClick={handleWithdrawal}

@@ -26,10 +26,10 @@ import { Tooltip } from "flowbite-react";
 import WalletModal from "@/components/WalletModal";
 import { useWallet } from "@solana/wallet-adapter-react";
 import Send from "@/components/linkAsWallet/Send";
-import SendHyperlink from "@/components/linkAsWallet/SendHyperlink";
+import SendCoinwala from "@/components/linkAsWallet/SendCoinwala";
 import { convertUsdToSol } from "@/lib/KeyStore";
 import { Input } from "@/components/ui/input";
-import { HyperLink } from "@/lib/url";
+import { CoinWala } from "@/lib/url";
 
 interface HyperLinkData {
   keypair: {
@@ -40,7 +40,7 @@ interface HyperLinkData {
 }
 
 const HyperLinkCard: React.FC = () => {
-  const [hyperlink, setHyperlink] = useState<HyperLinkData | null>(null);
+  const [coinwala, setCoinwala] = useState<HyperLinkData | null>(null);
   const [balance, setBalance] = useState<number | null>(0);
   const [usdBalance, setUsdBalance] = useState<number | null>(null);
   const [url, setUrl] = useState<URL>(new URL(window.location.href));
@@ -58,11 +58,11 @@ const HyperLinkCard: React.FC = () => {
     if (hash) {
       const url = `${process.env.NEXT_PUBLIC_HYPERLINK_ORIGIN}#${hash}`;
       try {
-        const hyperlinkInstance = await HyperLink.fromLink(url);
-        setHyperlink(hyperlinkInstance);
-        await fetchBalance(hyperlinkInstance);
+        const coinwalaInstance = await CoinWala.fromLink(url);
+        setCoinwala(coinwalaInstance);
+        await fetchBalance(coinwalaInstance);
       } catch (error) {
-        console.error("Invalid HyperLink:", error);
+        console.error("Invalid CoinWala link:", error);
         // Handle error state if needed
       }
     }
@@ -73,7 +73,7 @@ const HyperLinkCard: React.FC = () => {
   }, [loadHyperLink, isLoading]);
 
   const fetchBalance = async (
-    hyperlinkInstance: HyperLinkData
+    coinwalaInstance: HyperLinkData
   ): Promise<void> => {
     try {
       const connection = new Connection(
@@ -81,9 +81,9 @@ const HyperLinkCard: React.FC = () => {
         "confirmed"
       );
       const balanc = await connection.getBalance(
-        hyperlinkInstance.keypair.publicKey
+        coinwalaInstance.keypair.publicKey
       );
-      console.log("12", hyperlinkInstance.keypair.publicKey.toBase58());
+      console.log("12", coinwalaInstance.keypair.publicKey.toBase58());
       const solBalance = balanc / LAMPORTS_PER_SOL;
       setBalance(solBalance);
       const response = await fetch(
@@ -105,7 +105,7 @@ const HyperLinkCard: React.FC = () => {
   };
 
   const completeAmount = async () => {
-    if (!hyperlink) {
+    if (!coinwala) {
       console.error("No HyperLink available to transfer from.");
       return;
     }
@@ -114,13 +114,13 @@ const HyperLinkCard: React.FC = () => {
       "confirmed"
     );
     const currentBalance = await connection.getBalance(
-      hyperlink.keypair.publicKey
+      coinwala.keypair.publicKey
     );
     createLinkAndTransfer({ amount: currentBalance });
   };
 
   const handleTransferAmount = async () => {
-    if (!hyperlink) {
+    if (!coinwala) {
       console.error("No HyperLink available to transfer from.");
       return;
     }
@@ -130,14 +130,14 @@ const HyperLinkCard: React.FC = () => {
   };
 
   const createLinkAndTransfer = async ({ amount }: { amount: number }) => {
-    if (!hyperlink) {
+    if (!coinwala) {
       console.error("No HyperLink available to transfer from.");
       return;
     }
 
     try {
       setIsLoading(true);
-      const newHyperlink = await HyperLink.create();
+      const newCoinwala = await CoinWala.create();
       const connection = new Connection(
         "https://api.devnet.solana.com",
         "confirmed"
@@ -148,20 +148,20 @@ const HyperLinkCard: React.FC = () => {
 
       const transaction = new Transaction().add(
         SystemProgram.transfer({
-          fromPubkey: hyperlink.keypair.publicKey,
-          toPubkey: newHyperlink.keypair.publicKey,
+          fromPubkey: coinwala.keypair.publicKey,
+          toPubkey: newCoinwala.keypair.publicKey,
           lamports: currentBalance - 5000,
         })
       );
 
-      transaction.feePayer = hyperlink.keypair.publicKey;
+      transaction.feePayer = coinwala.keypair.publicKey;
       transaction.recentBlockhash = blockhash;
 
-      const hyperlinkInstance = await HyperLink.fromLink(window.location.href);
-      if (!hyperlinkInstance || !hyperlinkInstance.keypair) {
+      const coinwalaInstance = await CoinWala.fromLink(window.location.href);
+      if (!coinwalaInstance || !coinwalaInstance.keypair) {
         throw new Error("Invalid HyperLink or missing keypair");
       }
-      transaction.sign(hyperlinkInstance.keypair);
+      transaction.sign(coinwalaInstance.keypair);
 
       const signature = await connection.sendRawTransaction(
         transaction.serialize()
@@ -172,12 +172,12 @@ const HyperLinkCard: React.FC = () => {
         lastValidBlockHeight,
       });
 
-      setHyperlink(newHyperlink);
-      await fetchBalance(hyperlink);
-      await fetchBalance(newHyperlink);
-      setUrl(new URL(newHyperlink.url));
-      window.open(newHyperlink.url.toString(), "_blank");
-      console.log("newHyperlink", newHyperlink);
+      setCoinwala(newCoinwala);
+      await fetchBalance(coinwala);
+      await fetchBalance(newCoinwala);
+      setUrl(new URL(newCoinwala.url));
+      window.open(newCoinwala.url.toString(), "_blank");
+      console.log("newCoinwala", newCoinwala);
       setIsLoading(false);
     } catch (error) {
       console.error("Error:", error);
@@ -206,7 +206,7 @@ const HyperLinkCard: React.FC = () => {
   };
 
   const handleTransferToPersonalWallet = async () => {
-    if (!publicKey || !balance || !hyperlink) {
+    if (!publicKey || !balance || !coinwala) {
       toast.error("Wallet not connected.");
       return;
     }
@@ -215,7 +215,7 @@ const HyperLinkCard: React.FC = () => {
   };
 
   const handleTransfer = async (publicKey: PublicKey, amount: number) => {
-    if (!publicKey || !balance || !hyperlink) {
+    if (!publicKey || !balance || !coinwala) {
       toast.error("Missing required information for transfer.");
       return;
     }
@@ -229,25 +229,25 @@ const HyperLinkCard: React.FC = () => {
 
       const transaction = new Transaction().add(
         SystemProgram.transfer({
-          fromPubkey: hyperlink.keypair.publicKey,
+          fromPubkey: coinwala.keypair.publicKey,
           toPubkey: publicKey,
           lamports: amount - 5000,
         })
       );
       const { blockhash } = await connection.getLatestBlockhash();
       transaction.recentBlockhash = blockhash;
-      transaction.feePayer = hyperlink.keypair.publicKey;
-      transaction.sign(hyperlink.keypair);
+      transaction.feePayer = coinwala.keypair.publicKey;
+      transaction.sign(coinwala.keypair);
       const signature = await sendAndConfirmTransaction(
         connection,
         transaction,
-        [hyperlink.keypair]
+        [coinwala.keypair]
       );
 
       console.log(`Transfer successful! Signature: ${signature}`);
       toast.success(`Transfer successful! Signature: ${signature}`);
 
-      await fetchBalance(hyperlink);
+      await fetchBalance(coinwala);
       setRecipentPublicKey("");
       setTransferAmount("");
     } catch (error) {
@@ -269,7 +269,7 @@ const HyperLinkCard: React.FC = () => {
       case 2:
         return (
           <div>
-            <SendHyperlink
+            <SendCoinwala
               setStep={setStep}
               setTransferAmount={setTransferAmount}
               amount={transferAmount}
@@ -287,7 +287,7 @@ const HyperLinkCard: React.FC = () => {
       case 3:
         return (
           <div>
-            <SendHyperlink
+            <SendCoinwala
               setStep={setStep}
               setTransferAmount={setTransferAmount}
               amount={transferAmount}
@@ -361,7 +361,7 @@ const HyperLinkCard: React.FC = () => {
                       <Wifi className="w-6 h-6" />
                     </div>
                     <p className="text-xs opacity-75">POWERED BY</p>
-                    <p className="text-sm font-semibold">Hyperlink</p>
+                    <p className="text-sm font-semibold">Coinwala</p>
                   </div>
                 </div>
               </div>
@@ -400,11 +400,11 @@ const HyperLinkCard: React.FC = () => {
 
           <div className="mt-6">{handleSteps(step)}</div>
 
-          {showQrModal && hyperlink?.keypair?.publicKey && (
+          {showQrModal && coinwala?.keypair?.publicKey && (
             <WalletModal
               isVisible={showQrModal}
               onClose={() => setShowQrModal(false)}
-              publicKey={hyperlink?.keypair?.publicKey.toBase58().toString()}
+              publicKey={coinwala?.keypair?.publicKey.toBase58().toString()}
             />
           )}
         </CardContent>

@@ -55,7 +55,7 @@ const LoginAppbar: React.FC<UserInfoProps> = ({ session }) => {
       >
         <Image
           className="rounded-lg"
-          src="/icons/LogoLight.png"
+          src="/assets/images/images/symbolLogo.png"
           alt="logo"
           width={40}
           height={40}

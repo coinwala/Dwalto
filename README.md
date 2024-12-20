@@ -63,7 +63,7 @@ This feature enables users to generate a link that contains a cryptographic keyp
 
 ### Core Concepts
 
-- **Hyperlink Cryptography**: The system uses cryptographic methods to encode a keypair within a URL, allowing the secure transfer of funds.
+- **Coinwala Cryptography**: The system uses cryptographic methods to encode a keypair within a URL, allowing the secure transfer of funds.
 - **Key Derivation Function (KDF)**: A Key Derivation Function is used to generate a cryptographic keypair from a password and a salt.
 - **Sodium Library**: The [libsodium](https://libsodium.gitbook.io/doc/) library is used for various cryptographic operations.
 
@@ -86,9 +86,9 @@ Below is an explanation of the main components used in the implementation:
 - **randBuf()**: Generates a secure random buffer of the specified length using the libsodium library.
 - **pwToKeypair()**: Converts a password and salt into a cryptographic keypair using the key derivation function.
 
-#### HyperLink Class
+#### CoinWala Class
 
-The `HyperLink` class is the core of the link-based crypto sharing functionality:
+The `CoinWala` class is the core of the link-based crypto sharing functionality:
 
 - **Properties**:
 
@@ -97,13 +97,13 @@ The `HyperLink` class is the core of the link-based crypto sharing functionality
   - `salt`: The salt used in the key derivation process.
 
 - **Methods**:
-  - `create()`: Generates a new `HyperLink` instance with a random password and salt, derives the corresponding keypair, and encodes the information into a URL.
-  - `fromUrl(url: URL)`: Parses an existing URL to extract the password and salt, regenerates the keypair, and returns a `HyperLink` instance.
-  - `fromLink(link: string)`: Convenience method to create a `HyperLink` instance from a string link.
+  - `create()`: Generates a new `CoinWala` instance with a random password and salt, derives the corresponding keypair, and encodes the information into a URL.
+  - `fromUrl(url: URL)`: Parses an existing URL to extract the password and salt, regenerates the keypair, and returns a `CoinWala` instance.
+  - `fromLink(link: string)`: Convenience method to create a `CoinWala` instance from a string link.
 
 ### Example Usage
 
 1. **Creating a New Link**:
    ```typescript
-   const newLink = await HyperLink.create();
+   const newLink = await CoinWala.create();
    ```

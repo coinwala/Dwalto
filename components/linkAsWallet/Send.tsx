@@ -26,9 +26,9 @@ export default function Send({ setStep }: FundingOptionsProps) {
               <Link2 />
             </div>
             <div className="flex-col items-start justify-start rounded-full bg-grey-50 xs:p-3">
-              <div className="text-left">Send Hyperlink</div>
+              <div className="text-left">Send Coinwala</div>
               <div className="text-left text-xs font-normal text-grey-500">
-                Create an Hyperlink with the value that you can share with
+                Create an Coinwala with the value that you can share with
                 anyone.
               </div>
             </div>

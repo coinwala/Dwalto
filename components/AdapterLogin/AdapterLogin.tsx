@@ -33,7 +33,11 @@ const sendMessageToParent = (message: MessagePayload) => {
   };
 
   const isDevelopment = process.env.NODE_ENV === "development";
-  const developmentOrigins = ["http://localhost:3000", "http://localhost:3001"];
+  const developmentOrigins = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://wallet.coinwala.io",
+  ];
   const productionOrigins = process.env.NEXT_PUBLIC_ALLOWED_ORIGINS
     ? JSON.parse(process.env.NEXT_PUBLIC_ALLOWED_ORIGINS)
     : ["https://yourdomain.com"]; // Replace with your production domains

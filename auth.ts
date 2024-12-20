@@ -13,21 +13,23 @@ declare module "next-auth" {
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
       authorization: {
         params: {
           prompt: "consent",
           access_type: "offline",
           scope: "openid profile email",
-          session: {
-            strategy: "jwt",
-          },
         },
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET, // Try both secrets as fallback
   trustHost: true,
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
-    // get the idToken
     async jwt({ token, account }) {
       if (account) {
         token.idToken = account.id_token;

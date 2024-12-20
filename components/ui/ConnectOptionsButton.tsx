@@ -37,18 +37,18 @@ const ConnectOptionsButton = ({ onSelect }: any) => {
       <DropdownMenuContent className="w-[458px]">
         <DropdownMenuItem
           className="flex items-start p-3 cursor-pointer"
-          onClick={() => handleSelect("Login to Hyperlink")}
+          onClick={() => handleSelect("Login to Coinwala")}
         >
           <div className="flex w-5 items-center justify-center pt-1 mr-3">
             <FaGoogle size={20} />
           </div>
           <div>
             <h3 className="text-base font-semibold text-gray-800">
-              Login to your Hyperlink Account
+              Login to your Coinwala Account
             </h3>
             <p className="text-sm text-gray-600">
               No sign up needed, simply connect your existing Google account to
-              access Hyperlink.
+              access Coinwala.
             </p>
           </div>
         </DropdownMenuItem>

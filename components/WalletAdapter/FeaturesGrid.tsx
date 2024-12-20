@@ -97,7 +97,7 @@ const FeaturesGrid: React.FC = () => {
               <span className="text-[#e82523]">without wallet drainers</span>
             </>
           }
-          description="Hyperlink wallets will only be allowed for vetted sites. Hyperlink nor the app have access to your private keys."
+          description="Coinwala wallets will only be allowed for vetted sites. Coinwala nor the app have access to your private keys."
           imageClassName="mx-auto flex w-full max-w-[307px] items-center justify-center tablet:mx-[unset] tablet:w-[50%] tablet:justify-start"
           imageAlt="Security Feature"
         />

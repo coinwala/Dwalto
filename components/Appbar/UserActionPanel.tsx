@@ -117,17 +117,17 @@ export default function UserActionPanel({
             <div className="space-y-2">
               <OptionItem
                 icon={<Wallet className="h-5 w-5" />}
-                title="Hyperlink Wallet"
+                title="CoinWala Wallet"
                 description="The world's simplest wallet"
               />
-              <OptionItem
+              {/* <OptionItem
                 icon={<Coins className="h-5 w-5" />}
-                title="Hyperlink Pro"
+                title="Coinwala Pro"
                 description="Send digital assets at scale, even to non-crypto users"
-              />
+              /> */}
               <OptionItem
                 icon={<PlugZap className="h-5 w-5" />}
-                title="Hyperlink Wallet Adapter"
+                title="CoinWala Wallet Adapter"
                 description="Making blockchain apps consumer-ready"
               />
             </div>

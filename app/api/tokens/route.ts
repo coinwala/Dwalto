@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import {
+  clusterApiUrl,
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+} from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import axios from "axios";
 
@@ -27,9 +32,7 @@ interface TokenWithBalanceAndPrice {
   price: number;
 }
 
-const connection = new Connection(
-  "https://devnet.helius-rpc.com/?api-key=028f8594-c025-413e-9f99-9b32498a337d"
-);
+const connection = new Connection(clusterApiUrl("devnet"));
 
 async function getTokenAccounts(address: string) {
   const tokenAccounts = await connection.getParsedTokenAccountsByOwner(

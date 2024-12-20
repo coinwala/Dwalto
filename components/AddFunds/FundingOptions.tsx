@@ -8,10 +8,10 @@ import ExternalWalletTab from "./ExternalWalletTab";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 interface FundingOptionsProps {
-  HyperLinkPublicKey: string | null;
+  CoinWalaPublicKey: string | null;
 }
 
-function FundingOptions({ HyperLinkPublicKey }: FundingOptionsProps) {
+function FundingOptions({ CoinWalaPublicKey }: FundingOptionsProps) {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showExternalWallet, setShowExternalWallet] = useState<boolean>(false);
 
@@ -88,7 +88,7 @@ function FundingOptions({ HyperLinkPublicKey }: FundingOptionsProps) {
             />
           </div>
           <WalletModal
-            publicKey={HyperLinkPublicKey ? HyperLinkPublicKey : ""}
+            publicKey={CoinWalaPublicKey ? CoinWalaPublicKey : ""}
             isVisible={showModal}
             onClose={() => setShowModal(false)}
           />
@@ -96,7 +96,7 @@ function FundingOptions({ HyperLinkPublicKey }: FundingOptionsProps) {
       ) : (
         <>
           <ExternalWalletTab
-            HyperLinkPublicKey={HyperLinkPublicKey}
+            CoinWalaPublicKey={CoinWalaPublicKey}
             setShowExternalWallet={setShowExternalWallet}
           />
         </>

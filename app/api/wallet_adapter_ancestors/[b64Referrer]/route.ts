@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const ALLOWED_ORIGINS = [
   "http://localhost:3000",
   "http://localhost:3001",
-  "https://yourdomain.com",
+  "https://wallet.coinwala.io",
 ];
 
 function corsMiddleware(req: NextRequest) {
@@ -85,7 +85,11 @@ export async function GET(
     const sanitizedUrl = sanitizeUrlForAllowList(referrerData.referrerUrl);
 
     // Allowlist of permitted domains
-    const ALLOWED_DOMAINS = ["http://localhost:3000", "http://localhost:3001"];
+    const ALLOWED_DOMAINS = [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "https://wallet.coinwala.io",
+    ];
 
     if (!ALLOWED_DOMAINS.includes(sanitizedUrl)) {
       return NextResponse.json(

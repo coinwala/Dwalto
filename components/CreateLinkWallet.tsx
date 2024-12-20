@@ -18,7 +18,7 @@ import LinkPopup from "./LinkPopup";
 import { convertUsdToSol } from "@/lib/KeyStore";
 import BouncingDotsLoader from "./BouncingDotsLoader";
 import CustomTextField from "./InputComponent";
-import { HyperLink } from "@/lib/url";
+import { CoinWala } from "@/lib/url";
 
 export default function CreateLinkWallet() {
   const [amount, setAmount] = useState<string>("0");
@@ -40,10 +40,10 @@ export default function CreateLinkWallet() {
     }
 
     try {
-      // Create HyperLink
+      // Create CoinWala
       setIsLoading(true);
-      const hyperlink = await HyperLink.create();
-      const hyperlinkUrl = hyperlink.url.toString();
+      const coinwala = await CoinWala.create();
+      const coinwalaUrl = coinwala.url.toString();
 
       // Transfer funds
       const connection = new Connection(
@@ -56,18 +56,18 @@ export default function CreateLinkWallet() {
       const transaction = new Transaction().add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
-          toPubkey: new PublicKey(hyperlink.keypair.publicKey),
+          toPubkey: new PublicKey(coinwala.keypair.publicKey),
           lamports: BigInt(Number(amt) * LAMPORTS_PER_SOL),
         })
       );
 
       const signature = await sendTransaction(transaction, connection);
       await connection.confirmTransaction(signature, "confirmed");
-      window.open(hyperlinkUrl, "_blank");
+      window.open(coinwalaUrl, "_blank");
       setLinkPopupOpen(true);
-      setGeneratedLink(hyperlinkUrl);
+      setGeneratedLink(coinwalaUrl);
       setSignature(signature);
-      setGeneratedLink(hyperlinkUrl);
+      setGeneratedLink(coinwalaUrl);
       setIsLoading(false);
       console.log("Transfer successful. Signature:", signature);
       setError("");
@@ -75,13 +75,13 @@ export default function CreateLinkWallet() {
     } catch (err) {
       setIsLoading(false);
       console.error("Error:", err);
-      setError("Error creating HyperLink or transferring funds.");
+      setError("Error creating CoinWala or transferring funds.");
     }
   };
   return (
     <div>
       <Card className="w-full max-w-md mx-auto p-6 space-y-4">
-        <h2 className="text-2xl font-bold text-center">Create HyperLink</h2>
+        <h2 className="text-2xl font-bold text-center">Create CoinWala</h2>
         <p className="text-center text-sm text-gray-600">
           {
             "Send crypto & NFTs to anyone, even if they don't have a wallet. No app needed!"
@@ -113,7 +113,7 @@ export default function CreateLinkWallet() {
           onClick={createLinkAndTransfer}
           className="w-full"
         >
-          {isLoading ? <BouncingDotsLoader /> : "Create Hyperlink and Transfer"}
+          {isLoading ? <BouncingDotsLoader /> : "Create Coinwala and Transfer"}
         </Button>
 
         {error && <p className="text-red-500 text-sm">{error}</p>}

@@ -33,14 +33,14 @@ interface TokenMetadata {
 }
 
 interface ComboboxProps {
-  HyperLinkPublicKey: string;
+  CoinWalaPublicKey: string;
   onTokenSelect: (token: Token | null) => void;
 }
 
 const SOLANA_TOKEN_LIST_URL =
   "https://cdn.jsdelivr.net/gh/solana-labs/token-list@main/src/tokens/solana.tokenlist.json";
 
-export function Combobox({ HyperLinkPublicKey, onTokenSelect }: ComboboxProps) {
+export function Combobox({ CoinWalaPublicKey, onTokenSelect }: ComboboxProps) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>("");
   const [tokens, setTokens] = useState<Token[]>([]);
@@ -68,10 +68,10 @@ export function Combobox({ HyperLinkPublicKey, onTokenSelect }: ComboboxProps) {
 
   useEffect(() => {
     const fetchTokenBalances = async () => {
-      if (!HyperLinkPublicKey) return;
+      if (!CoinWalaPublicKey) return;
 
       const connection = new Connection("https://api.devnet.solana.com");
-      const publicKey = new PublicKey(HyperLinkPublicKey);
+      const publicKey = new PublicKey(CoinWalaPublicKey);
 
       try {
         const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
@@ -130,7 +130,7 @@ export function Combobox({ HyperLinkPublicKey, onTokenSelect }: ComboboxProps) {
     if (Object.keys(tokenList).length > 0) {
       fetchTokenBalances();
     }
-  }, [HyperLinkPublicKey, tokenList, onTokenSelect]);
+  }, [CoinWalaPublicKey, tokenList, onTokenSelect]);
 
   const selectedToken = tokens.find((token) => token.value === value);
 

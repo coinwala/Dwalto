@@ -7,7 +7,7 @@ import AppWalletProvider from "@/components/WalletProvider";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "HyperLink",
+  title: "CoinWala",
   description: "The world's simplest wallet",
 };
 

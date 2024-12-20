@@ -57,7 +57,7 @@ export default function LinkWallet() {
           <div className="text-sm text-gray-500 flex items-center gap-1">
             <ShieldCheck />
             <span>
-              All Hyperlinks are non-custodial wallets. HyperLink does not and
+              All CoinWala link are non-custodial wallets. CoinWala does not and
               cannot access your digital assets.
             </span>
           </div>

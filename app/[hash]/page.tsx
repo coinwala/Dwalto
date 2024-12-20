@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import HyperLinkCard from "./(components)/HyperLinkCard";
+import CoinWalaCard from "./(components)/CoinWalaCard";
 
 export default function HashPage() {
   const router = useRouter();
@@ -36,5 +36,5 @@ export default function HashPage() {
     return <div>Loading...</div>;
   }
 
-  return <HyperLinkCard />;
+  return <CoinWalaCard />;
 }
