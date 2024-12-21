@@ -136,7 +136,9 @@ export default function TokenInput({
             value={formatNumber(amount || "")}
             onChange={(e) => {
               const value = e.target.value.replace(/[^0-9.]/g, "");
-              setAmount && setAmount(value);
+              if (setAmount) {
+                setAmount(value);
+              }
             }}
             readOnly={readOnly}
           />
