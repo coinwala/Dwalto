@@ -20,6 +20,7 @@ const ConnectOptionsButton = ({ onSelect }: any) => {
     if (onSelect) {
       onSelect(option);
     }
+    console.log("Selected option:", option);
   };
 
   return (

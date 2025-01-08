@@ -81,7 +81,7 @@ export default function CreateLinkWallet() {
   return (
     <div>
       <Card className="w-full max-w-md mx-auto p-6 space-y-4">
-        <h2 className="text-2xl font-bold text-center">Create CoinWala</h2>
+        <h2 className="text-2xl font-bold text-center">Create Coinwala</h2>
         <p className="text-center text-sm text-gray-600">
           {
             "Send crypto & NFTs to anyone, even if they don't have a wallet. No app needed!"

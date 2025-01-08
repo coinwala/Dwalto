@@ -15,6 +15,7 @@ import {
   getConnection,
   getPublicKey,
   getBalance,
+  getTokenBalance,
 } from "@/lib/client";
 import { Input } from "../ui/input";
 import { CoinWala } from "@/lib/url";
@@ -31,6 +32,7 @@ interface Token {
   symbol: string;
   logoURI: string;
   balance: number;
+  decimals?: number; // Add this field
 }
 
 export default function ConnectedWallet({
@@ -53,7 +55,7 @@ export default function ConnectedWallet({
   useEffect(() => {
     initClients();
   }, []);
-
+  console.log(selectedToken);
   useEffect(() => {
     const fetchBalance = async () => {
       if (!CoinWalaPublicKey) {
@@ -102,32 +104,30 @@ export default function ConnectedWallet({
     setExternalWalletAddress(address);
     validateExternalAddress(address);
   };
-
+  //to do fix the decimal thing
   const handleWithdrawal = async () => {
-    console.log("Attempting withdrawal...");
-    console.log("Wallet connected:", connected);
-    console.log("Public key:", publicKey?.toString());
-
     let destinationAddress: string;
     let isCoinWala = false;
     let hyperLinkUrl: URL | null = null;
-
+    if (!CoinWalaPublicKey && displayExternalWallet !== "externalWallet") {
+      toast.error("CoinWala wallet address is not set");
+      return;
+    }
     if (displayExternalWallet === "Coinwala") {
       try {
         const newCoinWala = await CoinWala.create();
         setGeneratedCoinWala(newCoinWala);
         destinationAddress = newCoinWala.keypair.publicKey.toString();
         isCoinWala = true;
-
         try {
           const urlString = newCoinWala.url.toString();
-          if (!urlString.startsWith("http")) {
-            hyperLinkUrl = new URL(`https://${urlString}`);
-          } else {
-            hyperLinkUrl = new URL(urlString);
-          }
+          hyperLinkUrl = new URL(
+            urlString.startsWith("http") ? urlString : `https://${urlString}`
+          );
         } catch (urlError) {
           console.error("Error creating URL:", urlError);
+          toast.error("Failed to generate CoinWala URL");
+          return;
         }
 
         console.log(
@@ -148,7 +148,6 @@ export default function ConnectedWallet({
       destinationAddress = externalWalletAddress;
     } else {
       if (!connected || !publicKey) {
-        console.error("Wallet not connected or public key not available");
         toast.error(
           "User wallet not connected. Please connect your wallet first."
         );
@@ -156,26 +155,58 @@ export default function ConnectedWallet({
       }
       destinationAddress = publicKey.toString();
     }
+    if (!amount || amount === "0") {
+      toast.error("Please enter a valid withdrawal amount");
+      return;
+    }
+
+    if (!selectedToken) {
+      toast.error("Please select a token to withdraw");
+      return;
+    }
 
     setLoading(true);
     try {
-      const amtInSolString = await convertUsdToSol(amount);
-      const amtInSol = parseFloat(amtInSolString);
-      if (isNaN(amtInSol)) {
-        throw new Error("Invalid SOL amount");
-      }
-      const amtInLamports = Math.round(amtInSol * LAMPORTS_PER_SOL);
+      const tokenMintAddress = selectedToken.value;
+      const tokenDecimals = selectedToken.decimals || 6;
 
-      if (amtInLamports > balance * LAMPORTS_PER_SOL) {
-        throw new Error(
-          `Insufficient balance for withdrawal. Requested: ${amtInSol} SOL, Available: ${balance} SOL`
+      let amtInLamports: number;
+      if (tokenMintAddress && tokenMintAddress !== "SOL") {
+        const amtInTokens = parseFloat(amount);
+        if (isNaN(amtInTokens)) {
+          throw new Error("Invalid token amount");
+        }
+        amtInLamports = Math.round(amtInTokens * Math.pow(10, tokenDecimals));
+        const tokenBalance = await getTokenBalance(
+          new PublicKey(CoinWalaPublicKey ?? ""),
+          new PublicKey(tokenMintAddress)
         );
+
+        const amountInUIAmount = amtInLamports / Math.pow(10, tokenDecimals);
+        if (amountInUIAmount > tokenBalance) {
+          throw new Error(
+            `Insufficient token balance. Requested: ${amountInUIAmount}, Available: ${tokenBalance}`
+          );
+        }
+      } else {
+        const amtInSolString = await convertUsdToSol(amount);
+        const amtInSol = parseFloat(amtInSolString);
+        if (isNaN(amtInSol)) {
+          throw new Error("Invalid SOL amount");
+        }
+        amtInLamports = Math.round(amtInSol * LAMPORTS_PER_SOL);
+        if (amtInLamports > balance * LAMPORTS_PER_SOL) {
+          throw new Error(
+            `Insufficient SOL balance. Requested: ${amtInSol} SOL, Available: ${balance} SOL`
+          );
+        }
       }
 
       const signature = await sendTransaction(
         new PublicKey(CoinWalaPublicKey ?? ""),
         destinationAddress,
-        amtInLamports
+        amtInLamports,
+        tokenMintAddress
       );
       if (hyperLinkUrl) {
         window.open(hyperLinkUrl.toString(), "_blank", "noopener,noreferrer");
@@ -185,28 +216,23 @@ export default function ConnectedWallet({
         "Withdrawal transaction sent successfully. Signature:",
         signature
       );
-
       if (isCoinWala && generatedCoinWala) {
         const hyperLinkUrlString = hyperLinkUrl
           ? hyperLinkUrl.toString()
           : "URL not available";
-        console.log("Generated CoinWala URL:", hyperLinkUrlString);
         toast.success(`CoinWala created: ${hyperLinkUrlString}`, {
           duration: 10000,
           position: "top-center",
         });
       }
-
       toast.success("Withdrawal successful!", {
         duration: 5000,
         position: "top-center",
       });
-
       if (CoinWalaPublicKey) {
         const newBalance = await getBalance(new PublicKey(CoinWalaPublicKey));
         setBalance(parseFloat(newBalance));
       }
-
       setTimeout(() => {
         setDisplayExternalWallet("");
       }, 5000);

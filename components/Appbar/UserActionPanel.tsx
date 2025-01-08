@@ -52,14 +52,16 @@ export default function UserActionPanel({
               href="/"
               className="rounded-lg focus:outline-none focus:ring-2 focus:black/50"
             >
-              <Image
-                className="rounded-lg"
-                src="/icons/LogoLight.png"
-                alt="logo"
-                width={40}
-                height={40}
-                priority
-              />
+              <div className="border h-10 w-10 ml-2 rounded-lg inline-flex justify-center items-center">
+                <Image
+                  className="rounded-lg"
+                  src="/assets/images/images/symbolLogo.png"
+                  alt="logo"
+                  width={40}
+                  height={40}
+                  priority
+                />
+              </div>
             </Link>
           </div>
 

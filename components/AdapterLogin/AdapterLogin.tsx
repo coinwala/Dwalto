@@ -40,11 +40,10 @@ const sendMessageToParent = (message: MessagePayload) => {
   ];
   const productionOrigins = process.env.NEXT_PUBLIC_ALLOWED_ORIGINS
     ? JSON.parse(process.env.NEXT_PUBLIC_ALLOWED_ORIGINS)
-    : ["https://yourdomain.com"]; // Replace with your production domains
+    : ["https://wallet.coinwala.io"]; 
 
   const originsToTry = isDevelopment ? developmentOrigins : productionOrigins;
 
-  // Try sending to each allowed origin
   let messageSent = false;
   for (const origin of originsToTry) {
     try {
@@ -129,20 +128,20 @@ export default function AdapterLogin({ session }: UserInfoProps) {
             setPublicKey(publicKeyString);
             localStorage.setItem("publicKey", publicKeyString);
 
-            // Send public key with retry mechanism
+          
             const message = {
-              type: "login_success", // Changed type to be more specific
+              type: "login_success", 
               windowName: "",
               publicKey: publicKeyString,
             };
 
             sendMessageToParent(message);
 
-            // Set visit status and close window after a short delay
+         
             sessionStorage.setItem(VISIT_KEY, "true");
             setTimeout(() => {
               window.close();
-            }, 1000); // Give time for the message to be sent
+            }, 1000); 
           }
         } catch (error) {
           console.error("Error fetching public key:", error);
@@ -213,7 +212,6 @@ export default function AdapterLogin({ session }: UserInfoProps) {
             }
           ).toString(CryptoJS.enc.Utf8)
         ) as Session;
-        // Use the session prop directly
       } catch (error) {
         console.error("Error decrypting session:", error);
       }
